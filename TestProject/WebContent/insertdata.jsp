@@ -30,11 +30,14 @@ try{
 	Class.forName("org.postgresql.Driver");
 	Connection connection=DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "gfhjkm");
 	Statement st=connection.createStatement();
-	if(name=="" || password=="" || confirmpassword==""){
+	
+	String nameWithoutSpaces = name.replaceAll("\\s+","");
+	
+	if(nameWithoutSpaces=="" || password=="" || confirmpassword==""){
 		out.println("Заполните все поля");
 	}
 	
-	else if(!name.matches("[a-zA-Z0-9]+") || (name.length() < 4))
+	else if(!nameWithoutSpaces.matches("[a-zA-Z0-9]+") || (nameWithoutSpaces.length() < 4))
 	{
 		out.println("Имя пользователя должно быть длиннее 4 символов и состоять из букв английского алфавита ");
 	}
@@ -49,7 +52,7 @@ try{
 	
 	
 	else{	
-	st.executeUpdate("insert into testproject(name,password)values('"+name+"','"+password+"')");
+	st.executeUpdate("insert into testproject(name,password)values('"+nameWithoutSpaces+"','"+password+"')");
 out.println("Регистрация прошла успешно");
 }
 }catch(Exception e){
